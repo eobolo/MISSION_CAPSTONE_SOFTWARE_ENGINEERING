@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBC Feedback Coach - Professional Dashboard</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <!-- Quill.js CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Navigation Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand-logo">
+                        <div class="logo-icon">
+                            <i data-lucide="graduation-cap"></i>
+                        </div>
+                        <h1 class="brand-title">CBC Feedback Coach</h1>
+                    </div>
+                    <div class="brand-subtitle">Professional Grammar Correction Platform</div>
+                </div>
+                <div class="user-section">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i data-lucide="user"></i>
+                        </div>
+                        <div class="user-details">
+                            <span id="userEmail" class="user-email">Loading...</span>
+                            <span id="userName" class="user-role">Loading...</span>
+                        </div>
+                    </div>
+                    <button id="logoutBtn" class="btn-logout">
+                        <i data-lucide="log-out"></i>
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <main class="dashboard-main">
+            <!-- Quick Actions Bar -->
+            <!-- <div class="quick-actions" id="createNewDocumentHero">
+                <div class="action-card" id="createNewDocumentBtn">
+                    <div class="action-icon">
+                        <i data-lucide="file-plus"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Create Document</h3>
+                        <p>Start a new document for analysis</p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Main Content Grid -->
+            <div class="content-grid" id="DocumentUp">
+                <!-- Upload Section -->
+                <section id="documentUploadSection" class="content-card upload-section">
+                    <div class="card-header">
+                        <div class="header-icon">
+                            <i data-lucide="upload"></i>
+                        </div>
+                        <div class="header-content">
+                            <div class="block">
+                                <h2>Upload Document</h2>
+                                <p>Upload text files for grammar analysis and correction</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form id="documentUploadForm" class="upload-form">
+                        <div class="upload-area">
+                            <div class="upload-icon">
+                                <i data-lucide="cloud-upload"></i>
+                            </div>
+                            <div class="upload-content">
+                                <div class="block">
+                                    <h3>Drop your file here or browse</h3>
+                                    <p>Supports .txt files up to 1MB</p>
+                                </div>
+                                <input type="file" 
+                                       id="documentFile" 
+                                       name="file" 
+                                       accept=".txt,text/plain" 
+                                       required
+                                       class="file-input">
+                                <label for="documentFile" class="file-label">
+                                    <i data-lucide="folder"></i>
+                                    Choose File
+                                </label>
+                            </div>
+                        </div>
+                        <div class="flex-button">
+
+                            <button type="submit" id="uploadBtn" class="btn-primary text-center">
+                                <i data-lucide="send"></i>
+                                <span>Upload Document</span>
+                            </button>
+                            <button class="btn-success w-fit" id="createNewDocumentBtn">
+                                <i data-lucide="plus"></i>
+                                Create New Document
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div id="uploadFeedback" class="feedback-message"></div>
+                    
+                    <div class="help-section">
+                        <div class="help-icon">
+                            <i data-lucide="info"></i>
+                        </div>
+                        <div class="help-content">
+                            <h4>File Requirements</h4>
+                            <ul>
+                                <li>Plain text (.txt) files only</li>
+                                <li>Maximum size: 1MB</li>
+                                <li>UTF-8 encoding recommended</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Documents List Section -->
+                <section id="documentsListSection" class="content-card documents-section">
+                    <div class="card-header">
+                        <div class="header-icon">
+                            <i data-lucide="folder-open"></i>
+                        </div>
+                        <div class="header-content">
+                            <div class="block">
+                                <h2>Your Documents</h2>
+                                <p>Manage and edit your uploaded documents</p>
+                            </div>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn-secondary btn-sm" onclick="window.documentManager.loadDocuments()">
+                                <i data-lucide="refresh-cw"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="documents-container">
+                        <div class="documents-list" id="documentsList">
+                            <div class="loading-state" id="documentsLoading">
+                                <div class="loading-spinner">
+                                    <i data-lucide="loader-2"></i>
+                                </div>
+                                <span>Loading your documents...</span>
+                            </div>
+                        </div>
+                        <div id="documentsError" class="error-state" style="display: none;"></div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Document Editor Section -->
+            <div id="documentEditorSection" class="editor-container" style="display: none;">
+                <div class="editor-header">
+                    <div class="editor-title-section">
+                        <div class="editor-icon">
+                            <i data-lucide="edit-3"></i>
+                        </div>
+                        <div class="editor-info">
+                            <h2 id="editorTitle">Document Editor</h2>
+                            <div id="documentSizeIndicator" class="size-indicator">
+                                <i data-lucide="file-text"></i>
+                                <span id="currentSize">0 KB</span> / <span id="maxSize">1 MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="closeEditorBtn" class="btn-secondary">
+                            <i data-lucide="x"></i>
+                            Close Editor
+                        </button>
+                        <button id="saveDocumentBtn" class="btn-primary">
+                            <i data-lucide="save"></i>
+                            Save Document
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="editor-content">
+                    <div class="editor-layout">
+                        <div class="editor-main">
+                            <div id="quillEditor" class="rich-editor"></div>
+                        </div>
+                        <div class="chunks-sidebar">
+                            <div class="sidebar-header">
+                                <div class="sidebar-title">
+                                    <i data-lucide="layers"></i>
+                                    <h3>Document Chunks</h3>
+                                </div>
+                                <div class="chunks-status">
+                                    <div class="status-indicator">
+                                        <i data-lucide="activity" class="status-icon"></i>
+                                        <span id="chunksStatus" class="status-text">Processing...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chunksList" class="chunks-list">
+                                <div class="empty-state">
+                                    <i data-lucide="file-text"></i>
+                                    <p>Document will be automatically split into chunks for analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="editorLoading" class="loading-overlay" style="display: none;">
+                        <div class="loading-content">
+                            <div class="loading-spinner">
+                                <i data-lucide="loader-2"></i>
+                            </div>
+                            <span>Loading document...</span>
+                        </div>
+                    </div>
+                    <div id="editorError" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Professional Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal" style="display: none;">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i data-lucide="message-square"></i>
+                <h3 id="feedbackModalTitle">Grammar Feedback</h3>
+            </div>
+            <div class="modal-controls">
+                <button id="minimizeFeedbackBtn" class="control-btn minimize-btn" title="Minimize">
+                    <i data-lucide="minus"></i>
+                </button>
+                <button id="closeFeedbackBtn" class="control-btn close-btn" title="Close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="modal-content overdide">
+            <!-- Original Text Section -->
+            <div class="feedback-section">
+                <div class="section-header">
+                    <i data-lucide="file-text"></i>
+                    <h4>Original Text</h4>
+                </div>
+                <div id="originalText" class="content-box original-text"></div>
+            </div>
+            
+            <!-- Corrected Text Section -->
+            <div class="feedback-section green">
+                <div class="section-header text-green">
+                    <i data-lucide="check-circle"></i>
+                    <h4>Corrected Text</h4>
+                </div>
+                <div id="correctedText" class="content-box corrected-text"></div>
+            </div>
+            
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+                <div class="section-header">
+                    <i data-lucide="lightbulb"></i>
+                    <h4>Grammar Feedback</h4>
+                </div>
+                <div id="feedbackContent" class="content-box feedback-content"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="feedback-actions">
+                <button id="insertFeedbackBtn" class="btn-primary action-btn">
+                    <i data-lucide="check"></i>
+                    Apply Correction
+                </button>
+                <button id="dismissFeedbackBtn" class="btn-secondary action-btn">
+                    <i data-lucide="x"></i>
+                    Dismiss
+                </button>
+            </div>
+            
+            <!-- Translation Section -->
+            <div class="translation-section">
+                <div class="section-header">
+                    <i data-lucide="languages"></i>
+                    <h4>Translation Options</h4>
+                </div>
+                <div class="translation-grid">
+                    <div class="translation-group">
+                        <h5>To Kinyarwanda</h5>
+                        <div class="translation-buttons">
+                            <button id="translateOriginalBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Original
+                            </button>
+                            <button id="translateCorrectedBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Corrected
+                            </button>
+                            <button id="translateFeedbackBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Feedback
+                            </button>
+                        </div>
+                    </div>
+                    <div class="translation-group">
+                        <h5>To English</h5>
+                        <div class="translation-buttons">
+                            <button id="translateOriginalEnBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Original
+                            </button>
+                            <button id="translateCorrectedEnBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Corrected
+                            </button>
+                            <button id="translateFeedbackEnBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Feedback
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teacher Correction Section -->
+            <div class="teacher-section">
+                <div class="section-header">
+                    <i data-lucide="graduation-cap"></i>
+                    <h4>Submit Teacher Correction (P3 Level)</h4>
+                    <p class="section-description">Help improve our AI model by submitting your expert correction</p>
+                </div>
+                
+                <form class="correction-form">
+                    <div class="form-group">
+                        <label for="teacherCorrectionInput" class="form-label">
+                            <i data-lucide="edit"></i>
+                            Your Correction
+                        </label>
+                        <textarea id="teacherCorrectionInput" 
+                                  class="form-textarea" 
+                                  placeholder="Enter your corrected version of the text..."
+                                  rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cbcFeedbackInput" class="form-label">
+                            <i data-lucide="message-circle"></i>
+                            CBC-Aligned Feedback
+                        </label>
+                        <textarea id="cbcFeedbackInput" 
+                                  class="form-textarea" 
+                                  placeholder="Provide detailed CBC-aligned feedback for this correction..."
+                                  rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="submitCorrectionBtn" class="btn-success">
+                            <i data-lucide="send"></i>
+                            Submit for Training
+                        </button>
+                        <button type="button" id="clearCorrectionBtn" class="btn-secondary">
+                            <i data-lucide="refresh-cw"></i>
+                            Clear Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Confirm Action</h3>
+                <button id="modalCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancelBtn" class="btn-modal btn-cancel">Cancel</button>
+                <button id="modalConfirmBtn" class="btn-modal btn-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div id="renameModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rename Document</h3>
+                <button id="renameCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newDocumentName">New Document Name:</label>
+                    <input type="text" id="newDocumentName" class="modal-input" placeholder="Enter new name...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="renameCancelBtn" class="btn-modal btn-cancel">Cancel</button>
+                <button id="renameConfirmBtn" class="btn-modal btn-confirm">Rename</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Document Modal -->
+    <div id="createDocumentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Document</h3>
+                <button id="createCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="createDocumentName">Document Name:</label>
+                    <input type="text" id="createDocumentName" class="modal-input" placeholder="Enter document name (leave empty for auto-naming)...">
+                    <small class="help-text">Leave empty for auto-naming (Untitled 1, Untitled 2, etc.)</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="createCancelBtn" class="btn-modal btn-cancel">Cancel</button>
+                <button id="createConfirmBtn" class="btn-modal btn-confirm">Create Document</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Notification -->
+    <div id="floatingNotification" class="floating-notification" style="display: none;">
+        <div class="notification-content">
+            <span id="notificationMessage"></span>
+            <button id="notificationCloseBtn" class="notification-close">&times;</button>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="/static/js/dashboard_documents.js"></script>
+    <script>
+        // Initialize everything in proper order
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            
+            // Load user data first, then initialize DocumentManager
+            loadUserData().then(() => {
+                // Initialize DocumentManager after user data is loaded
+                if (window.documentManager) {
+                    window.documentManager.loadDocuments();
+                } else {
+                    // Fallback: if DocumentManager isn't ready, wait a bit and try again
+                    setTimeout(() => {
+                        if (window.documentManager) {
+                            window.documentManager.loadDocuments();
+                        } else {
+                            console.error('DocumentManager not available after timeout');
+                            // Show error message to user
+                            const listElement = document.getElementById('documentsList');
+                            if (listElement) {
+                                listElement.innerHTML = `
+                                    <div class="error-content">
+                                        <i data-lucide="alert-circle"></i>
+                                        <p>Failed to initialize document manager</p>
+                                        <button onclick="window.location.reload()" class="btn-secondary btn-sm">
+                                            <i data-lucide="refresh-cw"></i>
+                                            Refresh Page
+                                        </button>
+                                    </div>
+                                `;
+                            }
+                        }
+                    }, 1000);
+                }
+            }).catch(error => {
+                console.error('Failed to load user data:', error);
+            });
+        });
+
+        async function loadUserData() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                console.log('No access token found, redirecting to login');
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const response = await fetch('/auth/user-data', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    console.log('Token expired or invalid, redirecting to login');
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/';
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const userData = await response.json();
+                console.log('User data loaded:', userData);
+
+                // Update UI
+                const userEmailElement = document.getElementById('userEmail');
+                const userNameElement = document.getElementById('userName');
+
+                if (userEmailElement) {
+                    userEmailElement.textContent = userData.email;
+                }
+
+                if (userNameElement) {
+                    if (userData.first_name && userData.last_name) {
+                        userNameElement.textContent = `${userData.first_name} ${userData.last_name}`;
+                    } else if (userData.first_name) {
+                        userNameElement.textContent = userData.first_name;
+                    } else {
+                        // Use email username as fallback
+                        const emailUsername = userData.email.split('@')[0];
+                        userNameElement.textContent = emailUsername.charAt(0).toUpperCase() + emailUsername.slice(1);
+                    }
+                }
+
+                return userData; // Return for promise chain
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                // Show error state
+                const userEmailElement = document.getElementById('userEmail');
+                const userNameElement = document.getElementById('userName');
+                
+                if (userEmailElement) {
+                    userEmailElement.textContent = 'Error loading user data';
+                }
+                if (userNameElement) {
+                    userNameElement.textContent = 'Please refresh the page';
+                }
+                throw error; // Re-throw for promise chain
+            }
+        }
+
+    </script>
+</body>
+</html>
