@@ -81,8 +81,6 @@ The fine-tuned Mistral 7B model achieved perfect evaluation scores across all me
 ![CBC Grammar Correction Modal](images/cbc_grammar_correction_feeback_modal.png)
 *Figure 15: Detailed feedback modal showing grammar corrections with CBC-aligned Feedback*
 
-## Training Setup (Google Colab)
-
 ## Development Plan
 Currently I have not written the deployment plan in words I have only my sketched plan
 ![Deployment plan sketch](images/deployment_plan_sketch.jpg)
@@ -144,8 +142,8 @@ The CBC Feedback Coach application consists of a FastAPI backend with HTML/CSS/J
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd CBC_GRAMMAR_FEEDBACK_ML
+   git clone https://github.com/eobolo/MISSION_CAPSTONE_SOFTWARE_ENGINEERING.git
+   cd MISSION_CAPSTONE_SOFTWARE_ENGINEERING
    ```
 
 2. **Create and activate virtual environment:**
