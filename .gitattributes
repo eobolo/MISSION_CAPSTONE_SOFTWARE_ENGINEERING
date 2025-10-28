@@ -1,0 +1,5 @@
+*.zip filter=lfs diff=lfs merge=lfs -text
+mistral_single_task/** filter=lfs diff=lfs merge=lfs -text
+mistral_single_task_v2/** filter=lfs diff=lfs merge=lfs -text
+mistral_single_task_v3/** filter=lfs diff=lfs merge=lfs -text
+models/** filter=lfs diff=lfs merge=lfs -text
