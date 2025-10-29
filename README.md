@@ -1,4 +1,4 @@
-# The CBC Feedback Coach: A Grammar Correction Tool for Rwandan Education
+# The CBC English Proficiency Coach: A Grammar Correction Tool for Rwandan Education
 
 ## Video Presentation
 [Presentation](https://drive.google.com/file/d/19z0YiPBk-r1yjrDef8bg8yBorKeGVtsx/view?usp=sharing)
