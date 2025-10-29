@@ -26,8 +26,8 @@ def send_password_reset_email(user_email: str, user_name: str, reset_token: str)
         bool: True if email sent successfully, False otherwise
     """
     try:
-        # Create reset link - use environment variable or default to localhost
-        BASE_URL = config("BASE_URL", default="http://localhost:8000")
+        # Create reset link - use environment variable
+        BASE_URL = config("BASE_URL")
         reset_link = f"{BASE_URL}/reset-password?token={reset_token}"
         
         # Create email message
@@ -74,7 +74,7 @@ def send_password_reset_email(user_email: str, user_name: str, reset_token: str)
                     display: inline-block;
                     padding: 12px 30px;
                     background-color: #4b7cd2;
-                    color: white;
+                    color: #ffffff;
                     text-decoration: none;
                     border-radius: 5px;
                     margin: 20px 0;

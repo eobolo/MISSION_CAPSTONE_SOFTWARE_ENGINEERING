@@ -23,8 +23,9 @@ def get_db():
 async def google_login(request: Request):
     """Initiate Google OAuth flow"""
     try:
-        # Auto-detect production vs development redirect URI
-        redirect_uri = os.getenv('OAUTH_REDIRECT_URI', 'http://localhost:8000/auth/google/callback')
+        # Get redirect URI from environment variable
+        base_url = os.getenv('BASE_URL', 'http://localhost:8000')
+        redirect_uri = f"{base_url}/auth/google/callback"
         return await oauth.google.authorize_redirect(
             request, 
             redirect_uri,

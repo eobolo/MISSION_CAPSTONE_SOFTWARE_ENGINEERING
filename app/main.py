@@ -39,7 +39,7 @@ app.add_middleware(
     secret_key=session_secret,
     max_age=3600,  # Session expires after 1 hour
     same_site="lax",
-    https_only=False  # Set to True in production with HTTPS
+        https_only=os.getenv("ENVIRONMENT") == "production"  # HTTPS only in production
 )
 
 # Mount static files
