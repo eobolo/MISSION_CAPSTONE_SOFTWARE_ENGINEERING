@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cbc english proficiency coach</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <!-- Quill.js CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- CBC CoachLM Style Header -->
+        <header class="cbccoachlm-header">
+            <div class="header-content">
+                <!-- Left side: Brand -->
+                <div class="brand-section">
+                    <div class="brand-logo">
+                        <div class="logo-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h1 class="brand-title">cbc english proficiency coach</h1>
+                    </div>
+                </div>
+                
+                <!-- Right side: Controls -->
+                <div class="header-controls">
+                    <!-- Settings Button -->
+                    <div class="settings-container">
+                        <button id="settingsBtn" class="settings-btn">
+                            <i data-lucide="settings"></i>
+                            <span>Settings</span>
+                        </button>
+                        <!-- Settings Dropdown -->
+                        <div id="settingsDropdown" class="settings-dropdown" style="display: none;">
+                            <div class="dropdown-item" id="profileOption">
+                            <i data-lucide="user"></i>
+                                <span>Profile</span>
+                            </div>
+                            <div class="dropdown-item" id="themeOption">
+                                <i data-lucide="palette"></i>
+                                <span>Themes</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item" id="logoutOption">
+                                <i data-lucide="log-out"></i>
+                                <span>Sign Out</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Theme Selector Dropdown -->
+                        <div id="themeDropdown" class="theme-dropdown" style="display: none;">
+                            <div class="dropdown-item" data-theme="light">
+                                <i data-lucide="sun"></i>
+                                <span>Light mode</span>
+                            </div>
+                            <div class="dropdown-item" data-theme="dark">
+                                <i data-lucide="moon"></i>
+                                <span>Dark mode</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Avatar -->
+                    <div class="user-avatar" id="userAvatar">
+                        <span id="userInitials">U</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main class="dashboard-main">
+            <!-- CBC CoachLM Style Navigation Bar -->
+            <div class="navigation-bar">
+                <div class="nav-content">
+                    <!-- Left side: Navigation tabs -->
+                    <div class="nav-tabs">
+                        <button class="nav-tab active" data-tab="documents">Documents</button>
+                        
+                        <!-- Sort Dropdown moved here -->
+                        <div class="sort-container">
+                            <button class="sort-btn" id="sortBtn">
+                                <span id="sortText">Most recent</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+                            </button>
+                            <div id="sortDropdown" class="sort-dropdown" style="display: none;">
+                                <div class="dropdown-item" data-sort="recent">Most recent</div>
+                                <div class="dropdown-item" data-sort="title">Title</div>
+                                <div class="dropdown-item" data-sort="size">Size</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right side: Controls -->
+                    <div class="nav-controls">
+                        <!-- Upload Document Button -->
+                        <button class="upload-doc-btn" id="uploadDocumentBtn">
+                            <i data-lucide="upload"></i>
+                            Upload document
+                        </button>
+                        
+                        <!-- Create Document Button -->
+                        <button class="create-doc-btn" id="createNewDocumentBtn">
+                            <i data-lucide="plus"></i>
+                            Create new
+                        </button>
+                        
+                        <!-- View Controls -->
+                        <div class="view-controls">
+                            <!-- Grid/List Toggle -->
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="grid" title="Grid view">
+                                    <i data-lucide="check" class="check-icon"></i>
+                                    <i data-lucide="grid-2x2"></i>
+                                </button>
+                                <button class="view-btn" data-view="list" title="List view">
+                                    <i data-lucide="check" class="check-icon"></i>
+                                    <i data-lucide="list"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content" id="DocumentUp">
+                <!-- Section Title -->
+                <div class="section-header">
+                    <h2 class="section-title">Documents</h2>
+                </div>
+                
+                <!-- Documents Grid/List Container -->
+                <div class="documents-container" id="documentsContainer">
+                    <!-- Grid View -->
+                    <div class="documents-grid" id="documentsGrid">
+                        <!-- Create New Document Card -->
+                        <div class="document-card create-card" id="createNewDocumentCard">
+                            <div class="create-icon">
+                                <i data-lucide="plus"></i>
+                            </div>
+                            <div class="create-text">Create new document</div>
+                        </div>
+                        
+                        <!-- Documents List -->
+                        <div id="documentsList">
+                            <div class="loading-state" id="documentsLoading">
+                                <div class="loading-spinner">
+                                    <i data-lucide="loader-2"></i>
+                                </div>
+                                <span>Loading your documents...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- List View -->
+                    <div class="documents-list-view" id="documentsListView" style="display: none;">
+                        <div class="list-header">
+                            <div class="list-column">Title</div>
+                            <div class="list-column">Size</div>
+                            <div class="list-column">Created</div>
+                            <div class="list-column"></div>
+                        </div>
+                        <div id="documentsListContent">
+                            <!-- List items will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Error State -->
+                    <div id="documentsError" class="error-state" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- Upload Modal (Hidden by default) -->
+            <div id="uploadModal" class="upload-modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Upload Document</h3>
+                        <button class="modal-close" id="uploadModalClose">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+                    <form id="documentUploadForm" class="upload-form">
+                        <div class="upload-area">
+                            <div class="upload-icon">
+                                <i data-lucide="cloud-upload"></i>
+                            </div>
+                            <div class="upload-content">
+                                    <h3>Drop your file here or browse</h3>
+                                    <p>Supports .txt files up to 1MB</p>
+                                <input type="file" 
+                                       id="documentFile" 
+                                       name="file" 
+                                       accept=".txt,text/plain" 
+                                       required
+                                       class="file-input">
+                                <label for="documentFile" class="file-label">
+                                    <i data-lucide="folder"></i>
+                                    Choose File
+                                </label>
+                            </div>
+                        </div>
+                        <!-- File Preview Container -->
+                        <div id="filePreviewContainer" class="file-preview-container" style="display: none;">
+                            <!-- File preview content will be inserted here by JavaScript -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="cancelUploadBtn">Cancel</button>
+                            <button type="submit" id="uploadBtn" class="btn-primary">
+                                <i data-lucide="upload"></i>
+                                Upload Document
+                            </button>
+                        </div>
+                    </form>
+                    <div id="uploadFeedback" class="feedback-message"></div>
+                        </div>
+                    </div>
+            
+            <!-- Document Editor Section -->
+            <div id="documentEditorSection" class="editor-container" style="display: none;">
+                <!-- Three Column Layout -->
+                <div class="three-column-layout">
+                    <!-- Left Column: Text Sections -->
+                    <div id="leftColumn" class="editor-column left-column">
+                        <div class="column-header">
+                            <div class="column-title">
+                                <i data-lucide="layers"></i>
+                                <h3>Text Sections</h3>
+                            </div>
+                            <button id="leftColumnToggle" class="column-toggle" title="Collapse/Expand">
+                                <i data-lucide="panel-left-close"></i>
+                            </button>
+                        </div>
+                        <div class="column-content">
+                            <div class="chunks-status">
+                                <div class="status-indicator">
+                                    <i data-lucide="activity" class="status-icon"></i>
+                                    <span id="chunksStatus" class="status-text">Processing...</span>
+                        </div>
+                    </div>
+                            <div id="chunksList" class="chunks-list">
+                                <div class="empty-state">
+                                    <i data-lucide="file-text"></i>
+                                    <p>Document will be automatically split into sections for analysis</p>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            
+                    <!-- Center Column: Text Editor -->
+                    <div id="centerColumn" class="editor-column center-column">
+                <div class="editor-header">
+                    <div class="editor-title-section">
+                        <div class="editor-icon">
+                            <i data-lucide="edit-3"></i>
+                        </div>
+                        <div class="editor-info">
+                            <h2 id="editorTitle">Document Editor</h2>
+                            <div id="documentSizeIndicator" class="size-indicator">
+                                <i data-lucide="file-text"></i>
+                                <span id="currentSize">0 KB</span> / <span id="maxSize">1 MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="closeEditorBtn" class="btn-secondary">
+                            <i data-lucide="x"></i>
+                            Close Editor
+                        </button>
+                        <button id="saveDocumentBtn" class="btn-primary">
+                            <i data-lucide="save"></i>
+                            Save Document
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="editor-content">
+                            <div id="quillEditor" class="rich-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Feedback Panel -->
+                    <div id="rightColumn" class="editor-column right-column">
+                        <div class="column-header">
+                            <div class="column-title">
+                                <i data-lucide="message-square"></i>
+                                <h3>Writing Assistant</h3>
+                            </div>
+                            <button id="rightColumnToggle" class="column-toggle" title="Collapse/Expand">
+                                <i data-lucide="panel-right-close"></i>
+                            </button>
+                        </div>
+                        <div class="column-content">
+                            <div id="feedbackPanel" class="feedback-panel">
+                                <!-- Empty State -->
+                                <div id="emptyFeedbackState" class="empty-state">
+                                    <i data-lucide="lightbulb"></i>
+                                    <p>Select a text section to get grammar feedback and corrections</p>
+                                </div>
+                                
+                                <!-- Feedback Content (hidden initially) -->
+                                <div id="feedbackContent" class="feedback-content" style="display: none;">
+                                    <!-- Original Text Section -->
+                                    <div class="feedback-section">
+                                        <div class="section-header">
+                                            <i data-lucide="file-text"></i>
+                                            <h4>Original Text</h4>
+                                        </div>
+                                        <div id="originalText" class="content-box original-text"></div>
+                                    </div>
+                                    
+                                    <!-- Corrected Text Section -->
+                                    <div class="feedback-section green">
+                                        <div class="section-header text-green">
+                                            <i data-lucide="check-circle"></i>
+                                            <h4>Corrected Text</h4>
+                                        </div>
+                                        <div id="correctedText" class="content-box corrected-text"></div>
+                                    </div>
+                                    
+                                    <!-- Feedback Section -->
+                                    <div class="feedback-section">
+                                        <div class="section-header">
+                                            <i data-lucide="lightbulb"></i>
+                                            <h4>Grammar Feedback</h4>
+                                        </div>
+                                        <div id="feedbackText" class="content-box feedback-text"></div>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="feedback-actions">
+                                        <button id="getGrammarCorrectionBtn" class="btn-primary action-btn">
+                                            Grammar Check
+                                        </button>
+                                        <button id="insertFeedbackBtn" class="btn-success action-btn" style="display: none;">
+                                            <i data-lucide="check"></i>
+                                            Apply Correction
+                                        </button>
+                                        <button id="dismissFeedbackBtn" class="btn-secondary action-btn" style="display: none;">
+                                            <i data-lucide="x"></i>
+                                            Dismiss
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Translation Section -->
+                                    <div class="translation-section">
+                                        <div class="section-header">
+                                            <i data-lucide="languages"></i>
+                                            <h4>Translation Options</h4>
+                                        </div>
+                                        <div class="translation-grid">
+                                            <div class="translation-group">
+                                                <h5>To Kinyarwanda</h5>
+                                                <div class="translation-buttons">
+                                                    <button id="translateOriginalBtn" class="btn-translate">
+                                                        <i data-lucide="arrow-right"></i>
+                                                        Original
+                                                    </button>
+                                                    <button id="translateCorrectedBtn" class="btn-translate">
+                                                        <i data-lucide="arrow-right"></i>
+                                                        Corrected
+                                                    </button>
+                                                    <button id="translateFeedbackBtn" class="btn-translate">
+                                                        <i data-lucide="arrow-right"></i>
+                                                        Feedback
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="translation-group">
+                                                <h5>To English</h5>
+                                                <div class="translation-buttons">
+                                                    <button id="translateOriginalEnBtn" class="btn-translate">
+                                                        <i data-lucide="arrow-right"></i>
+                                                        Original
+                                                    </button>
+                                                    <button id="translateCorrectedEnBtn" class="btn-translate">
+                                                        <i data-lucide="arrow-right"></i>
+                                                        Corrected
+                                                    </button>
+                                                    <button id="translateFeedbackEnBtn" class="btn-translate">
+                                                        <i data-lucide="arrow-right"></i>
+                                                        Feedback
+                                                    </button>
+                                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    
+                                    <!-- Teacher Correction Section -->
+                                    <div class="teacher-section">
+                                        <div class="section-header">
+                                            <i data-lucide="graduation-cap"></i>
+                                            <h4>Submit Teacher Correction (P3 Level)</h4>
+                                            <p class="section-description">Help improve our AI model by submitting your expert correction</p>
+                                        </div>
+                                        
+                                        <form class="correction-form">
+                                            <div class="form-group">
+                                                <label for="teacherCorrectionInput" class="form-label">
+                                                    <i data-lucide="edit"></i>
+                                                    Your Correction
+                                                </label>
+                                                <textarea id="teacherCorrectionInput" class="form-textarea" placeholder="Enter your corrected version of the text..." rows="4"></textarea>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="cbcFeedbackInput" class="form-label">
+                                                    <i data-lucide="message-circle"></i>
+                                                    CBC-Aligned Feedback
+                                                </label>
+                                                <textarea id="cbcFeedbackInput" class="form-textarea" placeholder="Provide detailed CBC-aligned feedback for this correction..." rows="4"></textarea>
+                                            </div>
+                                            
+                                            <div class="form-actions">
+                                                <button type="button" id="submitCorrectionBtn" class="btn-success">
+                                                    <i data-lucide="send"></i>
+                                                    Submit for Training
+                                                </button>
+                                                <button type="button" id="clearCorrectionBtn" class="btn-secondary">
+                                                    <i data-lucide="refresh-cw"></i>
+                                                    Clear Form
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading and Error States -->
+                    <div id="editorLoading" class="loading-overlay" style="display: none;">
+                        <div class="loading-content">
+                            <div class="loading-spinner">
+                                <i data-lucide="loader-2"></i>
+                            </div>
+                            <span>Loading document...</span>
+                        </div>
+                    </div>
+                    <div id="editorError" class="error-message" style="display: none;"></div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Professional Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal" style="display: none;">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i data-lucide="message-square"></i>
+                <h3 id="feedbackModalTitle">Grammar Feedback</h3>
+            </div>
+            <div class="modal-controls">
+                <button id="minimizeFeedbackBtn" class="control-btn minimize-btn" title="Minimize">
+                    <i data-lucide="minus"></i>
+                </button>
+                <button id="closeFeedbackBtn" class="control-btn close-btn" title="Close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="modal-content overdide">
+            <!-- Original Text Section -->
+            <div class="feedback-section">
+                <div class="section-header">
+                    <i data-lucide="file-text"></i>
+                    <h4>Original Text</h4>
+                </div>
+                <div id="originalText" class="content-box original-text"></div>
+            </div>
+            
+            <!-- Corrected Text Section -->
+            <div class="feedback-section green">
+                <div class="section-header text-green">
+                    <i data-lucide="check-circle"></i>
+                    <h4>Corrected Text</h4>
+                </div>
+                <div id="correctedText" class="content-box corrected-text"></div>
+            </div>
+            
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+                <div class="section-header">
+                    <i data-lucide="lightbulb"></i>
+                    <h4>Grammar Feedback</h4>
+                </div>
+                <div id="feedbackContent" class="content-box feedback-content"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="feedback-actions">
+                <button id="insertFeedbackBtn" class="btn-primary action-btn">
+                    <i data-lucide="check"></i>
+                    Apply Correction
+                </button>
+                <button id="dismissFeedbackBtn" class="btn-secondary action-btn">
+                    <i data-lucide="x"></i>
+                    Dismiss
+                </button>
+            </div>
+            
+            <!-- Translation Section -->
+            <div class="translation-section">
+                <div class="section-header">
+                    <i data-lucide="languages"></i>
+                    <h4>Translation Options</h4>
+                </div>
+                <div class="translation-grid">
+                    <div class="translation-group">
+                        <h5>To Kinyarwanda</h5>
+                        <div class="translation-buttons">
+                            <button id="translateOriginalBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Original
+                            </button>
+                            <button id="translateCorrectedBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Corrected
+                            </button>
+                            <button id="translateFeedbackBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Feedback
+                            </button>
+                        </div>
+                    </div>
+                    <div class="translation-group">
+                        <h5>To English</h5>
+                        <div class="translation-buttons">
+                            <button id="translateOriginalEnBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Original
+                            </button>
+                            <button id="translateCorrectedEnBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Corrected
+                            </button>
+                            <button id="translateFeedbackEnBtn" class="btn-translate">
+                                <i data-lucide="arrow-right"></i>
+                                Feedback
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teacher Correction Section -->
+            <div class="teacher-section">
+                <div class="section-header">
+                    <i data-lucide="graduation-cap"></i>
+                    <h4>Submit Teacher Correction (P3 Level)</h4>
+                    <p class="section-description">Help improve our AI model by submitting your expert correction</p>
+                </div>
+                
+                <form class="correction-form">
+                    <div class="form-group">
+                        <label for="teacherCorrectionInput" class="form-label">
+                            <i data-lucide="edit"></i>
+                            Your Correction
+                        </label>
+                        <textarea id="teacherCorrectionInput" 
+                                  class="form-textarea" 
+                                  placeholder="Enter your corrected version of the text..."
+                                  rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cbcFeedbackInput" class="form-label">
+                            <i data-lucide="message-circle"></i>
+                            CBC-Aligned Feedback
+                        </label>
+                        <textarea id="cbcFeedbackInput" 
+                                  class="form-textarea" 
+                                  placeholder="Provide detailed CBC-aligned feedback for this correction..."
+                                  rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="submitCorrectionBtn" class="btn-success">
+                            <i data-lucide="send"></i>
+                            Submit for Training
+                        </button>
+                        <button type="button" id="clearCorrectionBtn" class="btn-secondary">
+                            <i data-lucide="refresh-cw"></i>
+                            Clear Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Confirm Action</h3>
+                <button id="modalCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancelBtn" class="btn-modal btn-cancel">Cancel</button>
+                <button id="modalConfirmBtn" class="btn-modal btn-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div id="renameModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rename Document</h3>
+                <button id="renameCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newDocumentName">New Document Name:</label>
+                    <input type="text" id="newDocumentName" class="modal-input" placeholder="Enter new name...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="renameCancelBtn" class="btn-modal btn-cancel">Cancel</button>
+                <button id="renameConfirmBtn" class="btn-modal btn-confirm">Rename</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Document Modal -->
+    <div id="createDocumentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Document</h3>
+                <button id="createCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="createDocumentName">Document Name:</label>
+                    <input type="text" id="createDocumentName" class="modal-input" placeholder="Enter document name (leave empty for auto-naming)...">
+                    <small class="help-text">Leave empty for auto-naming (Untitled 1, Untitled 2, etc.)</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="createCancelBtn" class="btn-modal btn-cancel">Cancel</button>
+                <button id="createConfirmBtn" class="btn-modal btn-confirm">Create Document</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal (Profile) -->
+    <div id="settingsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h3>Profile Settings</h3>
+                <button id="settingsCloseBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Profile Picture/Initials -->
+                <div class="profile-display" id="settingsProfileDisplay">
+                    <div class="profile-img-container" id="settingsProfileImgContainer">
+                        <span class="profile-initials" id="settingsProfileInitials">U</span>
+                    </div>
+                    <p class="profile-email" id="settingsProfileEmail">user@example.com</p>
+                </div>
+                
+                <!-- Name Fields Section -->
+                <div class="profile-name-section">
+                    <!-- Editable Name Fields -->
+                    <div class="form-group">
+                        <label for="settingsFirstName">
+                            First Name
+                            <span class="edit-icon-wrapper" data-edit="firstName">
+                                <i data-lucide="pencil"></i>
+                            </span>
+                        </label>
+                        <div class="editable-field" data-field="firstName">
+                            <span class="display-text" id="firstNameDisplay"></span>
+                            <input type="text" id="settingsFirstName" class="edit-input" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="settingsLastName">
+                            Last Name
+                            <span class="edit-icon-wrapper" data-edit="lastName">
+                                <i data-lucide="pencil"></i>
+                            </span>
+                        </label>
+                        <div class="editable-field" data-field="lastName">
+                            <span class="display-text" id="lastNameDisplay"></span>
+                            <input type="text" id="settingsLastName" class="edit-input" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <div class="readonly-field" id="settingsEmailField"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="settingsSaveBtn" class="btn-modal btn-confirm" style="display: none;">
+                    <i class="fas fa-save"></i>
+                    Save Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Notification -->
+    <div id="floatingNotification" class="floating-notification" style="display: none;">
+        <div class="notification-content">
+            <span id="notificationMessage"></span>
+            <button id="notificationCloseBtn" class="notification-close">&times;</button>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <!-- Lucide Icons - Official CDN (exact from docs) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="/static/js/websocket_client.js"></script>
+    <script src="/static/js/dashboard_documents.js"></script>
+    <script>
+        // Initialize everything in proper order
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide icons with icons object from the library
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons({
+                    icons: lucide.icons
+                });
+            }
+            
+            // Load user data first, then initialize DocumentManager
+            loadUserData().then((userData) => {
+                // Store userData globally for WebSocket
+                window.userData = userData;
+                
+                // Initialize WebSocket client
+                if (window.WebSocketClient && userData && userData.user_id) {
+                    window.websocketClient = new WebSocketClient();
+                    window.websocketClient.connect(userData.user_id);
+                }
+                
+                // DocumentManager is already initialized with theme from userData
+                if (window.documentManager) {
+                    window.documentManager.loadDocuments();
+                } else {
+                    // Fallback: if DocumentManager isn't ready, wait a bit and try again
+                    setTimeout(() => {
+                        if (window.documentManager) {
+                            window.documentManager.loadDocuments();
+                        } else {
+                            console.error('DocumentManager not available after timeout');
+                            // Show error notification instead of body error
+                            if (window.documentManager) {
+                                window.documentManager.showFloatingNotification('error', 'Failed to initialize document manager. Please refresh the page.');
+                            } else {
+                                // Fallback notification if DocumentManager is not available
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 2000);
+                            }
+                        }
+                    }, 1000);
+                }
+            }).catch(error => {
+                console.error('Failed to load user data:', error);
+            });
+        });
+
+        async function loadUserData() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                console.log('No access token found, redirecting to login');
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const response = await fetch('/auth/user-data', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    console.log('Token expired or invalid, redirecting to login');
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/';
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const userData = await response.json();
+                console.log('User data loaded:', userData);
+
+                // Store userData globally
+                window.userData = userData;
+
+                // Update user avatar and theme
+                if (window.documentManager) {
+                    window.documentManager.updateUserAvatar(userData);
+                    // Apply user's theme preference
+                    if (userData.theme) {
+                        window.documentManager.applyTheme(userData.theme);
+                    }
+                } else {
+                    // DocumentManager not ready yet, will be updated when it initializes
+                    console.log('DocumentManager not ready, will update avatar when initialized');
+                }
+
+                return userData;
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                throw error;
+            }
+        }
+
+    </script>
+</body>
+</html>
