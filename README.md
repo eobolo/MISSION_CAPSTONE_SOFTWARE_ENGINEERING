@@ -173,6 +173,8 @@ The CBC Feedback Coach application consists of a FastAPI backend with HTML/CSS/J
 3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
+   pip install -r requirements-test.txt
+   playwright install
    ```
 
 4. **Configure environment variables:**
