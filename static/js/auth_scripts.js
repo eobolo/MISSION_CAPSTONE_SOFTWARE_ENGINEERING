@@ -992,14 +992,11 @@ class AuthenticationForm {
                 <li>Opt-out of data usage for AI training</li>
             </ul>
             
-            <h2>6. Cookies</h2>
-            <p>We use essential cookies to maintain your session and preferences. No tracking cookies are used.</p>
-            
             <h2>7. Contact</h2>
-            <p>For privacy concerns, contact us at: privacy@cbccoach.rw</p>
+            <p>For privacy concerns, contact us at: obolo.emmanuel31052000@gmail.com</p>
             
             <h2>8. Updates</h2>
-            <p>We may update this policy and will notify you of significant changes. Last updated: October 2025</p>
+            <p>We may update this policy and will notify you of significant changes. Last updated: November 2025</p>
         `;
     }
     
