@@ -965,7 +965,6 @@ class AuthenticationForm {
             <ul>
                 <li><strong>Account Information:</strong> Your name, email address, and profile picture (if you sign in with Google)</li>
                 <li><strong>Content Data:</strong> Documents you create, text you write, and grammar feedback you receive</li>
-                <li><strong>Usage Data:</strong> How you interact with our platform to improve our services</li>
             </ul>
             
             <h2>2. How We Use Your Information</h2>
@@ -988,7 +987,6 @@ class AuthenticationForm {
             <ul>
                 <li>Access your personal data</li>
                 <li>Request deletion of your account and data</li>
-                <li>Export your documents</li>
                 <li>Opt-out of data usage for AI training</li>
             </ul>
             
