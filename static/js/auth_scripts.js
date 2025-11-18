@@ -954,7 +954,7 @@ class AuthenticationForm {
             <p>These Terms of Service shall be governed by and construed in accordance with the laws of the Republic of Rwanda. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of Rwandan courts.</p>
             
             <h2>10. Contact Information</h2>
-            <p>For questions about these Terms of Service, please contact: support@cbccoach.rw</p>
+            <p>For questions about these Terms of Service, please contact: obolo.emmanuel31052000@gmail.com</p>
             
             <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
             
