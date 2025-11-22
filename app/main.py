@@ -116,9 +116,6 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
 
 @app.get("/intro", response_class=HTMLResponse)
 async def intro(request: Request):
-    """Project intro / landing slideshow with typing animation.
-    This is a standalone page; the existing root (`/`) remains the auth page.
-    """
     return templates.TemplateResponse("home_intro.html", {"request": request})
 
 
