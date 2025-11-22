@@ -14,10 +14,20 @@
     <!-- Load critical CSS inline for above-the-fold content -->
     <style>
         /* Critical above-the-fold styles */
+        :root{
+            --project-bg-left: #0f1724;
+            --project-bg-right: #213a66;
+            --project-accent: rgb(21, 61, 127);
+            --project-lemon: #F6E05E;
+            --project-text: #0f1724;
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
+            background: linear-gradient(120deg,var(--project-bg-left),var(--project-bg-right));
+            color: #fff;
         }
 
         .auth-container {
@@ -42,12 +52,16 @@
     </style>
 
     <!-- Defer non-critical CSS -->
+    <link rel="stylesheet" href="/static/css/site.css">
     <link rel="stylesheet" href="static/css/auth_styles.css" media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="static/css/auth_styles.css">
     </noscript>
 
-    <link rel="icon" href="static/image/cropped-alu_step_device-2-32x32.webp">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/image/cbc-logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/image/cbc-logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/image/cbc-logo.png">
+    <link rel="manifest" href="/static/site.webmanifest">
 
     <!-- Defer Google Fonts -->
     <link
@@ -80,12 +94,7 @@
     <div class="auth-container">
         <div class="auth-card">
             <!-- Header -->
-            <div class="auth-header">
-                <div class="logo">
-                    <i class="fas fa-pen-fancy"></i>
-                    <h1>CBC English Proficiency Coach</h1>
-                </div>
-            </div>
+            
 
             <!-- Form Toggle -->
             <div class="form-toggle">

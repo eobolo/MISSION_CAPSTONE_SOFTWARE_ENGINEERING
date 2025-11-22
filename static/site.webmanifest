@@ -1,0 +1,12 @@
+{
+  "name": "CBC English Proficiency Coach",
+  "short_name": "CBC Coach",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#153d7f",
+  "icons": [
+    { "src": "/static/image/cbc-logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/static/image/cbc-logo.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

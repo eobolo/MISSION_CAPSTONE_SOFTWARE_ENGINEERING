@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CBC English Proficiency Coach — Intro</title>
+    <link rel="stylesheet" href="/static/css/home_intro.css">
+    <link rel="stylesheet" href="/static/css/site.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/image/cbc-logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/image/cbc-logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/image/cbc-logo.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <script defer src="/static/js/home_intro.js"></script>
+    <meta name="description" content="Intro slideshow for the CBC English Proficiency Coach project" />
+    <style>
+        /* Minimal reset for template isolation */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="intro-root">
+        <div class="grid-bg" aria-hidden="true"></div>
+
+        <section class="hero">
+            <div class="hero-inner">
+                <img src="/static/image/cbc-logo.png" alt="CBC logo" width="32" height="32" class="site-logo site-logo--center" />
+                <div class="badge">CBC English Proficiency Coach</div>
+
+                <h2 class="hero-title">
+                    <span class="line">One tool to <span class="underline">improve</span></span>
+                    <span class="line">classroom learning</span>
+                </h2>
+
+                <p class="hero-sub">CBC Feedback Coach is an advanced grammar correction system designed to provide
+                    educational<br>feedback aligned with Rwandan Competency-Based Curriculum guidelines.</p>
+
+                <!-- Login removed from intro; Skip will be used to proceed to auth -->
+            </div>
+
+            <!-- Floating feature boxes -->
+            <div class="feature feature-1">
+                <div class="feature-inner">
+                    <span class="icon">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/opeotjej.json"
+                            trigger="loop"
+                            colors="primary:#121331,secondary:#3a3347,tertiary:#faefd1,quaternary:#66d7ee"
+                            style="width:250px;height:250px">
+                        </lord-icon>
+                    </span>
+                    <div class="ftext">Grammar correction</div>
+                </div>
+            </div>
+            <div class="feature feature-2">
+                <div class="feature-inner">
+                    <span class="icon">
+                        <lord-icon 
+                        src="https://cdn.lordicon.com/xvmmqwjv.json" trigger="loop"
+                            colors="primary:#121331,secondary:#f28ba8,tertiary:#f4c89c,quaternary:#4bb3fd,quinary:#faefd1"
+                            style="width:250px;height:250px">
+                        </lord-icon>
+                    </span>
+                    <div class="ftext">CBC‑aligned feedback</div>
+                </div>
+            </div>
+            <div class="feature feature-3">
+                <div class="feature-inner">
+                    <span class="icon">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/tyntlpjn.json"
+                            trigger="loop"
+                            colors="primary:#121331,secondary:#bcee66"
+                            style="width:250px;height:250px">
+                        </lord-icon>
+                    </span>
+                    <div class="ftext">Kinyarwanda ↔ English</div>
+                </div>
+            </div>
+            <div class="feature feature-4">
+                <div class="feature-inner">
+                    <span class="icon">
+                        <lord-icon src="https://cdn.lordicon.com/vwzukuhn.json" trigger="loop"
+                            colors="quaternary:#faefd1" style="width:250px;height:250px">
+                        </lord-icon>
+                    </span>
+                    <div class="ftext">Document management</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="controls">
+            <button id="skipBtn" class="skip-btn" aria-label="Skip intro">Skip</button>
+        </div>
+    </main>
+
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</body>
+
+</html>
