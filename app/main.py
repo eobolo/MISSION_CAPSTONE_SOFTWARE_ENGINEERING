@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.gzip import GZipMiddleware
-from starlette.middleware.trustedhost import TrustedHostMiddleware
 from app.database.db_config import create_users_table, create_documents_table, create_training_data_table
 from app.routes.auth import router as auth_router
 from app.routes.documents import router as documents_router
@@ -21,16 +20,16 @@ import secrets
 load_dotenv()
 
 app = FastAPI(
-    title="CBC Feedback Coach MVP", 
+    title="CBC English Proficiency Coach MVP", 
     version="0.1.3",
     docs_url="/docs" if os.getenv("ENVIRONMENT") != "production" else None,
     redoc_url="/redoc" if os.getenv("ENVIRONMENT") != "production" else None
 )
 
-# Add compression middleware for text-based responses (gzip)
+# compression middleware for text-based responses (gzip)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# Add session middleware for OAuth (must be before routes)
+# session middleware for OAuth (must be before routes)
 # Generate a secret key if not in environment (for development)
 session_secret = os.getenv("SESSION_SECRET", secrets.token_urlsafe(32))
 

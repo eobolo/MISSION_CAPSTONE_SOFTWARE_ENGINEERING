@@ -5,9 +5,9 @@ Handles intelligent chunking, auto-save, and file size validation
 
 import json
 import asyncio
-from typing import Dict, Set, Any
-from fastapi import WebSocket, WebSocketDisconnect
-from app.utils.text_processor import IntelligentTextProcessor, TextChunk
+from typing import Dict, Any
+from fastapi import WebSocket
+from app.utils.text_processor import IntelligentTextProcessor
 from app.database.db_config import get_db_connection
 
 class WebSocketManager:
