@@ -1,0 +1,53 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+.env
+.env.local
+.venv/
+venv/
+env/
+
+# Testing
+tests/
+locustfiles/
+pytest.ini
+requirements-test.txt
+reports/
+
+# Large ML model directories (served via HuggingFace API, not locally)
+models/
+mistral_single_task/
+mistral_single_task_v2/
+mistral_single_task_v3/
+
+# Training data and notebooks
+notebooks/
+m2_csv_file/
+m2_csv_file_1/
+m2_csv_file_2/
+cbc_dataset.jsonl
+experiment_sheet/
+
+# Root-level utility/test scripts (not the app/utils/)
+utils/
+
+# Media and documentation
+*.mp4
+images/
+README.md
+test_report.md
+
+# Python version file (Docker base image controls this)
+.python-version
